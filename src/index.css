@@ -1,0 +1,239 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------------------------------------------------------
+   Design tokens — palette §21.2 du document de conception
+   --------------------------------------------------------------- */
+:root {
+  --c-bg: 11 17 32;
+  --c-panel: 17 28 51;
+  --c-panel-alt: 22 35 61;
+  --c-line: 42 55 79;
+  --c-ink: 248 250 252;
+  --c-muted: 148 163 184;
+  --c-primary: 34 211 238;
+  --c-success: 34 197 94;
+  --c-warning: 245 158 11;
+  --c-danger: 239 68 68;
+  --c-accent: 139 92 246;
+
+  --grid-line: rgb(148 163 184 / 0.07);
+  color-scheme: dark;
+}
+
+html[data-theme='light'] {
+  --c-bg: 244 246 250;
+  --c-panel: 255 255 255;
+  --c-panel-alt: 238 242 248;
+  --c-line: 203 213 225;
+  --c-ink: 12 20 36;
+  --c-muted: 82 98 122;
+  --c-primary: 8 145 178;
+  --c-success: 21 128 61;
+  --c-warning: 180 83 9;
+  --c-danger: 190 30 45;
+  --c-accent: 109 40 217;
+
+  --grid-line: rgb(15 23 42 / 0.06);
+  color-scheme: light;
+}
+
+/* Taille du texte — Options §13.2 */
+html[data-text-size='small'] {
+  font-size: 15px;
+}
+html[data-text-size='normal'] {
+  font-size: 16px;
+}
+html[data-text-size='large'] {
+  font-size: 18px;
+}
+
+/* Animations désactivées — Options §13.2 + accessibilité */
+html[data-animations='off'] *,
+html[data-animations='off'] *::before,
+html[data-animations='off'] *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-bg text-ink font-sans antialiased;
+    background-image:
+      linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+    background-size: 56px 56px;
+    background-attachment: fixed;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display;
+  }
+
+  ::selection {
+    background: rgb(var(--c-primary) / 0.28);
+  }
+
+  :focus-visible {
+    outline: 2px solid rgb(var(--c-primary));
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+}
+
+@layer components {
+  .shell {
+    @apply mx-auto w-full max-w-6xl px-4 pb-16 pt-6 sm:px-6;
+  }
+
+  .panel {
+    @apply rounded-xl border border-line bg-panel/90 shadow-panel;
+  }
+
+  .panel-head {
+    @apply flex items-center justify-between gap-3 border-b border-line px-4 py-3;
+  }
+
+  .eyebrow {
+    @apply font-mono text-[0.6875rem] uppercase tracking-[0.24em] text-muted;
+  }
+
+  .btn {
+    @apply inline-flex select-none items-center justify-center gap-2 rounded-lg border border-line bg-panel-alt
+      px-4 py-2.5 text-base font-medium text-ink transition
+      hover:border-primary/60 hover:bg-primary/10 active:translate-y-px
+      disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-line disabled:hover:bg-panel-alt;
+    min-height: 44px;
+  }
+
+  .btn-primary {
+    @apply border-primary/70 bg-primary/15 text-primary
+      hover:border-primary hover:bg-primary/25 hover:text-ink;
+  }
+
+  .btn-ghost {
+    @apply border-transparent bg-transparent text-muted hover:border-line hover:bg-panel-alt hover:text-ink;
+  }
+
+  .btn-danger {
+    @apply border-danger/50 bg-danger/10 text-danger hover:border-danger hover:bg-danger/20 hover:text-ink;
+  }
+
+  .btn-success {
+    @apply border-success/50 bg-success/10 text-success hover:border-success hover:bg-success/20 hover:text-ink;
+  }
+
+  .btn-lg {
+    @apply px-6 py-3.5 text-lg;
+  }
+
+  .tag {
+    @apply inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-mono text-[0.6875rem]
+      uppercase tracking-wider;
+  }
+
+  .tag-info {
+    @apply border-primary/40 bg-primary/10 text-primary;
+  }
+  .tag-ok {
+    @apply border-success/40 bg-success/10 text-success;
+  }
+  .tag-warn {
+    @apply border-warning/40 bg-warning/10 text-warning;
+  }
+  .tag-danger {
+    @apply border-danger/40 bg-danger/10 text-danger;
+  }
+  .tag-accent {
+    @apply border-accent/40 bg-accent/10 text-accent;
+  }
+  .tag-muted {
+    @apply border-line bg-panel-alt text-muted;
+  }
+
+  .stat-value {
+    @apply font-mono text-xl font-medium tabular-nums text-ink;
+  }
+
+  .divider {
+    @apply h-px w-full bg-line;
+  }
+
+  .link-back {
+    @apply inline-flex items-center gap-2 text-sm text-muted transition hover:text-primary;
+  }
+
+  .field-label {
+    @apply font-mono text-[0.6875rem] uppercase tracking-[0.18em] text-muted;
+  }
+
+  /* Contrôles natifs stylés */
+  .range {
+    @apply h-2 w-full cursor-pointer appearance-none rounded-full bg-panel-alt;
+  }
+  .range::-webkit-slider-thumb {
+    @apply h-4 w-4 appearance-none rounded-full border-2 border-bg bg-primary;
+    box-shadow: 0 0 0 1px rgb(var(--c-primary) / 0.5);
+  }
+  .range::-moz-range-thumb {
+    @apply h-4 w-4 appearance-none rounded-full border-2 border-bg bg-primary;
+  }
+
+  .switch {
+    @apply relative inline-flex h-7 w-12 shrink-0 cursor-pointer items-center rounded-full border border-line
+      bg-panel-alt transition;
+  }
+  .switch[data-on='true'] {
+    @apply border-primary/60 bg-primary/25;
+  }
+  .switch-knob {
+    @apply pointer-events-none block h-5 w-5 translate-x-1 rounded-full bg-muted transition;
+  }
+  .switch[data-on='true'] .switch-knob {
+    @apply translate-x-6 bg-primary;
+  }
+}
+
+@layer utilities {
+  .clip-corner {
+    clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%);
+  }
+
+  .starfield::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      radial-gradient(1.4px 1.4px at 12% 18%, rgb(248 250 252 / 0.55), transparent 60%),
+      radial-gradient(1.2px 1.2px at 78% 12%, rgb(248 250 252 / 0.4), transparent 60%),
+      radial-gradient(1.6px 1.6px at 63% 72%, rgb(248 250 252 / 0.35), transparent 60%),
+      radial-gradient(1.1px 1.1px at 28% 84%, rgb(248 250 252 / 0.4), transparent 60%),
+      radial-gradient(1.3px 1.3px at 91% 58%, rgb(248 250 252 / 0.3), transparent 60%),
+      radial-gradient(1px 1px at 42% 38%, rgb(248 250 252 / 0.3), transparent 60%);
+    z-index: 0;
+  }
+}
